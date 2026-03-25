@@ -50,9 +50,9 @@
     padding: 30px;
     border-radius: 0px; /* 模擬真實明細 */
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    /* 讓寬度隨著內容(商品名稱)自動變寬，但保留最小寬度 */
-    min-width: 350px;
-    width: max-content;
+    /* 【修正】固定寬度，防止過寬導致縮放變形 */
+    width: 380px; 
+    box-sizing: border-box; /* 確保 padding 不影響寬度計算 */
     color: #333;
     position: relative;
   }
@@ -60,13 +60,35 @@
   .receipt-header h2 { margin: 0; color: var(--brand-color); letter-spacing: 2px; }
   .receipt-header p { margin: 5px 0 0; font-size: 14px; color: #666; }
   .receipt-section { margin-bottom: 15px; font-size: 15px; line-height: 1.6; }
-  .receipt-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-  /* 強制表格文字不換行，讓長品名能順利撐開圖片寬度 */
-  .receipt-table th { text-align: left; border-bottom: 1px solid #ddd; padding: 5px 0; white-space: nowrap; }
-  .receipt-table td { padding: 8px 0; white-space: nowrap; }
-  /* 增加 CSS 權重，確保標題和數字都能正確向右對齊 */
-  .receipt-table .text-right { text-align: right; }
+  .receipt-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; table-layout: fixed; /* 輔助對齊 */ }
   
+  /* 表格基本樣式 */
+  .receipt-table th, .receipt-table td { 
+    padding: 8px 0; 
+    vertical-align: top; /* 讓換行的文字與數字頂部對齊 */
+  }
+
+  /* 【修正】定義各欄位寬度與對齊 */
+  /* 商品名稱：允許換行 */
+  .receipt-table th:nth-child(1),
+  .receipt-table td:nth-child(1) {
+    text-align: left;
+    width: 45%; /* 給名稱較多空間 */
+    word-wrap: break-word; /* 允許長單詞換行 */
+    overflow-wrap: break-word;
+  }
+  
+  /* 單價、數量、小計：數字對齊，不換行 */
+  .receipt-table th:nth-child(2),
+  .receipt-table td:nth-child(2),
+  .receipt-table th:nth-child(3),
+  .receipt-table td:nth-child(3),
+  .receipt-table th:nth-child(4),
+  .receipt-table td:nth-child(4) {
+    text-align: right; /* 【重要】數字向右對齊 */
+    white-space: nowrap; /* 數字不換行 */
+  }
+
   .total-section { border-top: 2px dashed #ccc; padding-top: 15px; text-align: right; font-size: 18px; font-weight: bold; color: var(--brand-color); }
   .footer-notes { font-size: 13px; color: #555; background: #fff; padding: 10px; border-left: 4px solid var(--brand-color); margin-top: 15px; }
 
@@ -145,9 +167,9 @@
       <thead>
         <tr>
           <th>品項</th>
-          <th class="text-right">單價</th>
-          <th class="text-right">數量</th>
-          <th class="text-right">小計</th>
+          <th>單價</th>
+          <th>數量</th>
+          <th>小計</th>
         </tr>
       </thead>
       <tbody id="prev-items">
@@ -219,9 +241,9 @@
         itemsTbody.innerHTML += `
           <tr>
             <td>${name}</td>
-            <td class="text-right">$${price}</td>
-            <td class="text-right">${qty}</td>
-            <td class="text-right">$${itemTotal}</td>
+            <td>$${price}</td>
+            <td>${qty}</td>
+            <td>$${itemTotal}</td>
           </tr>
         `;
       }
