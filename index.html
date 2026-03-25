@@ -1,265 +1,256 @@
-{\rtf1\ansi\ansicpg950\cocoartf2822
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 Times-Roman;}
-{\colortbl;\red255\green255\blue255;\red226\green229\blue232;\red36\green37\blue39;}
-{\*\expandedcolortbl;;\cssrgb\c90980\c91765\c92941;\cssrgb\c18824\c19216\c20392;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\deftab720
-\pard\pardeftab720\partightenfactor0
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cat Coffee 訂單確認系統</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root {
+    --brand-color: #5c4033; /* 咖啡色系 */
+    --bg-color: #f9f6f0;
+  }
+  body {
+    font-family: 'Helvetica Neue', Arial, 'LiHei Pro', sans-serif;
+    background-color: #eef2f5;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .app-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1000px;
+    width: 100%;
+    justify-content: center;
+  }
+  /* 控制面板樣式 */
+  .control-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    flex: 1;
+    min-width: 300px;
+  }
+  .form-group { margin-bottom: 15px; }
+  .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+  .form-group input, .form-group textarea {
+    width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;
+  }
+  .item-row { display: flex; gap: 10px; margin-bottom: 10px; }
+  .item-row input { flex: 1; }
+  
+  /* 收據預覽卡片樣式 (要轉成圖片的區域) */
+  .receipt-preview {
+    background: var(--bg-color);
+    padding: 30px;
+    border-radius: 0px; /* 模擬真實明細 */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    width: 350px;
+    color: #333;
+    position: relative;
+  }
+  .receipt-header { text-align: center; border-bottom: 2px dashed #ccc; padding-bottom: 15px; margin-bottom: 15px; }
+  .receipt-header h2 { margin: 0; color: var(--brand-color); letter-spacing: 2px; }
+  .receipt-header p { margin: 5px 0 0; font-size: 14px; color: #666; }
+  .receipt-section { margin-bottom: 15px; font-size: 15px; line-height: 1.6; }
+  .receipt-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+  .receipt-table th { text-align: left; border-bottom: 1px solid #ddd; padding: 5px 0; }
+  .receipt-table td { padding: 8px 0; }
+  .text-right { text-align: right; }
+  .total-section { border-top: 2px dashed #ccc; padding-top: 15px; text-align: right; font-size: 18px; font-weight: bold; color: var(--brand-color); }
+  .footer-notes { font-size: 13px; color: #555; background: #fff; padding: 10px; border-left: 4px solid var(--brand-color); margin-top: 15px; }
 
-\f0\fs56 \cf2 \cb3 \expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 <!DOCTYPE html>\
-<html lang="zh-TW">\
-<head>\
-<meta charset="UTF-8">\
-<meta name="viewport" content="width=device-width, initial-scale=1.0">\
-<title>Cat Coffee \uc0\u35330 \u21934 \u30906 \u35469 \u31995 \u32113 </title>\
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>\
-<style>\
-  :root \{\
-    --brand-color: #5c4033; /* \uc0\u21654 \u21857 \u33394 \u31995  */\
-    --bg-color: #f9f6f0;\
-  \}\
-  body \{\
-    font-family: 'Helvetica Neue', Arial, 'LiHei Pro', sans-serif;\
-    background-color: #eef2f5;\
-    margin: 0;\
-    padding: 20px;\
-    display: flex;\
-    flex-direction: column;\
-    align-items: center;\
-  \}\
-  .app-container \{\
-    display: flex;\
-    flex-wrap: wrap;\
-    gap: 20px;\
-    max-width: 1000px;\
-    width: 100%;\
-    justify-content: center;\
-  \}\
-  /* \uc0\u25511 \u21046 \u38754 \u26495 \u27171 \u24335  */\
-  .control-panel \{\
-    background: white;\
-    padding: 20px;\
-    border-radius: 12px;\
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);\
-    flex: 1;\
-    min-width: 300px;\
-  \}\
-  .form-group \{ margin-bottom: 15px; \}\
-  .form-group label \{ display: block; margin-bottom: 5px; font-weight: bold; color: #333; \}\
-  .form-group input, .form-group textarea \{\
-    width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;\
-  \}\
-  .item-row \{ display: flex; gap: 10px; margin-bottom: 10px; \}\
-  .item-row input \{ flex: 1; \}\
-  \
-  /* \uc0\u25910 \u25818 \u38928 \u35261 \u21345 \u29255 \u27171 \u24335  (\u35201 \u36681 \u25104 \u22294 \u29255 \u30340 \u21312 \u22495 ) */\
-  .receipt-preview \{\
-    background: var(--bg-color);\
-    padding: 30px;\
-    border-radius: 0px; /* \uc0\u27169 \u25836 \u30495 \u23526 \u26126 \u32048  */\
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);\
-    width: 350px;\
-    color: #333;\
-    position: relative;\
-  \}\
-  .receipt-header \{ text-align: center; border-bottom: 2px dashed #ccc; padding-bottom: 15px; margin-bottom: 15px; \}\
-  .receipt-header h2 \{ margin: 0; color: var(--brand-color); letter-spacing: 2px; \}\
-  .receipt-header p \{ margin: 5px 0 0; font-size: 14px; color: #666; \}\
-  .receipt-section \{ margin-bottom: 15px; font-size: 15px; line-height: 1.6; \}\
-  .receipt-table \{ width: 100%; border-collapse: collapse; margin-bottom: 15px; \}\
-  .receipt-table th \{ text-align: left; border-bottom: 1px solid #ddd; padding: 5px 0; \}\
-  .receipt-table td \{ padding: 8px 0; \}\
-  .text-right \{ text-align: right; \}\
-  .total-section \{ border-top: 2px dashed #ccc; padding-top: 15px; text-align: right; font-size: 18px; font-weight: bold; color: var(--brand-color); \}\
-  .footer-notes \{ font-size: 13px; color: #555; background: #fff; padding: 10px; border-left: 4px solid var(--brand-color); margin-top: 15px; \}\
-\
-  button \{\
-    background-color: var(--brand-color); color: white; border: none; padding: 10px 20px;\
-    border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; margin-top: 10px;\
-  \}\
-  button:hover \{ background-color: #4a332a; \}\
-  .btn-secondary \{ background-color: #888; margin-bottom: 15px;\}\
-</style>\
-</head>\
-<body>\
-\
-<div class="app-container">\
-  <div class="control-panel">\
-    <h3>\uc0\u55357 \u56541  \u35330 \u21934 \u36039 \u26009 \u36664 \u20837 </h3>\
-    <div class="form-group">\
-      <label>\uc0\u35330 \u36092 \u20154 \u22995 \u21517 </label>\
-      <input type="text" id="input-name" placeholder="\uc0\u20363 \u22914 \u65306 \u29579 \u23567 \u26126 " oninput="updatePreview()">\
-    </div>\
-    \
-    <div class="form-group">\
-      <label>\uc0\u21830 \u21697 \u28165 \u21934 </label>\
-      <div id="items-container">\
-        <div class="item-row">\
-          <input type="text" class="item-name" placeholder="\uc0\u21830 \u21697 \u21517 \u31281 " value="\u32147 \u20856 \u37197 \u26041 \u35910  \u21322 \u30917 " oninput="updatePreview()">\
-          <input type="number" class="item-price" placeholder="\uc0\u21934 \u20729 " value="350" oninput="updatePreview()">\
-          <input type="number" class="item-qty" placeholder="\uc0\u25976 \u37327 " value="2" oninput="updatePreview()">\
-        </div>\
-      </div>\
-      <button class="btn-secondary" onclick="addItemRow()">+ \uc0\u26032 \u22686 \u19968 \u38917 \u21830 \u21697 </button>\
-    </div>\
-\
-    <div class="form-group">\
-      <label>\
-        <input type="checkbox" id="input-tax" onchange="updatePreview()"> \uc0\u38656 \u35201 \u38283 \u31435 \u30332 \u31080  (\u21547 \u31237  5%)\
-      </label>\
-    </div>\
-\
-    <div class="form-group">\
-      <label>\uc0\u20184 \u27454 \u26399 \u38480 </label>\
-      <input type="datetime-local" id="input-pay-time" onchange="updatePreview()">\
-    </div>\
-    \
-    <div class="form-group">\
-      <label>\uc0\u21462 \u36008 /\u20986 \u36008 \u26178 \u38291 </label>\
-      <input type="datetime-local" id="input-pickup-time" onchange="updatePreview()">\
-    </div>\
-\
-    <div class="form-group">\
-      <label>\uc0\u35330 \u21934 \u20633 \u35387 </label>\
-      <input type="text" id="input-notes" placeholder="\uc0\u20363 \u22914 \u65306 \u35910 \u23376 \u38656 \u30952 \u31881  (\u25163 \u27798 )" oninput="updatePreview()">\
-    </div>\
-\
-    <div class="form-group">\
-      <label>\uc0\u29305 \u21029 \u25552 \u37266  (\u33258 \u35330 \u20839 \u23481 )</label>\
-      <textarea id="input-reminder" rows="3" oninput="updatePreview()">\uc0\u24863 \u35613 \u24744 \u30340 \u35330 \u36092 \u65281 \u35531 \u26044 \u26399 \u38480 \u20839 \u23436 \u25104 \u21295 \u27454 \u65292 \u20197 \u20813 \u35330 \u21934 \u21462 \u28040 \u12290 \u25910 \u21040 \u27454 \u38917 \u24460 \u23559 \u30433 \u36895 \u28858 \u24744 \u28888 \u28953 \u20986 \u36008 \u12290 </textarea>\
-    </div>\
-\
-    <button onclick="downloadReceipt()">\uc0\u55357 \u56568  \u20786 \u23384 \u28858 \u35330 \u21934 \u22294 \u29255 </button>\
-  </div>\
-\
-  <div class="receipt-preview" id="receipt-card">\
-    <div class="receipt-header">\
-      <h2>Cat Coffee</h2>\
-      <p>\uc0\u31166 \u23500 \u39135 \u21697  - \u35330 \u21934 \u30906 \u35469 \u21934 </p>\
-    </div>\
-    \
-    <div class="receipt-section">\
-      <strong>\uc0\u35330 \u36092 \u20154 \u65306 </strong> <span id="prev-name">\u29579 \u23567 \u26126 </span><br>\
-      <strong>\uc0\u20184 \u27454 \u26399 \u38480 \u65306 </strong> <span id="prev-pay-time">\u23578 \u26410 \u35373 \u23450 </span><br>\
-      <strong>\uc0\u21462 \u36008 \u26178 \u38291 \u65306 </strong> <span id="prev-pickup-time">\u23578 \u26410 \u35373 \u23450 </span><br>\
-      <strong>\uc0\u20633 \u35387 \u65306 </strong> <span id="prev-notes">\u28961 </span>\
-    </div>\
-\
-    <table class="receipt-table">\
-      <thead>\
-        <tr>\
-          <th>\uc0\u21697 \u38917 </th>\
-          <th class="text-right">\uc0\u25976 \u37327 </th>\
-          <th class="text-right">\uc0\u23567 \u35336 </th>\
-        </tr>\
-      </thead>\
-      <tbody id="prev-items">\
-        </tbody>\
-    </table>\
-\
-    <div class="total-section">\
-      <div style="font-size: 14px; color: #666; margin-bottom: 5px;" id="prev-tax-info">\uc0\u26410 \u31237 </div>\
-      \uc0\u32317 \u35336 \u65306 NT$ <span id="prev-total">0</span>\
-    </div>\
-\
-    <div class="footer-notes">\
-      <strong>\uc0\u55357 \u56481  \u29305 \u21029 \u25552 \u37266 \u65306 </strong><br>\
-      <span id="prev-reminder">\uc0\u24863 \u35613 \u24744 \u30340 \u35330 \u36092 \u65281 \u35531 \u26044 \u26399 \u38480 \u20839 \u23436 \u25104 \u21295 \u27454 \u65292 \u20197 \u20813 \u35330 \u21934 \u21462 \u28040 \u12290 </span>\
-    </div>\
-  </div>\
-</div>\
-\
-<script>\
-  // \uc0\u26684 \u24335 \u21270 \u26085 \u26399 \u26178 \u38291 \u30340 \u36628 \u21161 \u20989 \u24335 \
-  function formatDateTime(datetimeStr) \{\
-    if (!datetimeStr) return '\uc0\u23578 \u26410 \u35373 \u23450 ';\
-    const date = new Date(datetimeStr);\
-    return `$\{date.getFullYear()\}/$\{String(date.getMonth()+1).padStart(2,'0')\}/$\{String(date.getDate()).padStart(2,'0')\} $\{String(date.getHours()).padStart(2,'0')\}:$\{String(date.getMinutes()).padStart(2,'0')\}`;\
-  \}\
-\
-  // \uc0\u26032 \u22686 \u21830 \u21697 \u36664 \u20837 \u21015 \
-  function addItemRow() \{\
-    const container = document.getElementById('items-container');\
-    const row = document.createElement('div');\
-    row.className = 'item-row';\
-    row.innerHTML = `\
-      <input type="text" class="item-name" placeholder="\uc0\u21830 \u21697 \u21517 \u31281 " oninput="updatePreview()">\
-      <input type="number" class="item-price" placeholder="\uc0\u21934 \u20729 " oninput="updatePreview()">\
-      <input type="number" class="item-qty" placeholder="\uc0\u25976 \u37327 " value="1" oninput="updatePreview()">\
-    `;\
-    container.appendChild(row);\
-  \}\
-\
-  // \uc0\u21363 \u26178 \u26356 \u26032 \u38928 \u35261 \u21345 \u29255 \
-  function updatePreview() \{\
-    document.getElementById('prev-name').innerText = document.getElementById('input-name').value || '\uc0\u26410 \u22635 \u23531 ';\
-    document.getElementById('prev-pay-time').innerText = formatDateTime(document.getElementById('input-pay-time').value);\
-    document.getElementById('prev-pickup-time').innerText = formatDateTime(document.getElementById('input-pickup-time').value);\
-    document.getElementById('prev-notes').innerText = document.getElementById('input-notes').value || '\uc0\u28961 ';\
-    document.getElementById('prev-reminder').innerText = document.getElementById('input-reminder').value || '\uc0\u28961 ';\
-\
-    // \uc0\u35336 \u31639 \u21830 \u21697 \u33287 \u32317 \u20729 \
-    let subtotal = 0;\
-    const itemsTbody = document.getElementById('prev-items');\
-    itemsTbody.innerHTML = ''; \
-\
-    const itemNames = document.querySelectorAll('.item-name');\
-    const itemPrices = document.querySelectorAll('.item-price');\
-    const itemQtys = document.querySelectorAll('.item-qty');\
-\
-    for(let i = 0; i < itemNames.length; i++) \{\
-      const name = itemNames[i].value;\
-      const price = parseFloat(itemPrices[i].value) || 0;\
-      const qty = parseInt(itemQtys[i].value) || 0;\
-      \
-      if(name) \{\
-        const itemTotal = price * qty;\
-        subtotal += itemTotal;\
-        itemsTbody.innerHTML += `\
-          <tr>\
-            <td>$\{name\}</td>\
-            <td class="text-right">$\{qty\}</td>\
-            <td class="text-right">$$\{itemTotal\}</td>\
-          </tr>\
-        `;\
-      \}\
-    \}\
-\
-    // \uc0\u34389 \u29702 \u31237 \u37329 \
-    const isTaxed = document.getElementById('input-tax').checked;\
-    let finalTotal = subtotal;\
-    if(isTaxed) \{\
-      finalTotal = Math.round(subtotal * 1.05);\
-      document.getElementById('prev-tax-info').innerText = `\uc0\u21547 \u31237  (5%)`;\
-    \} else \{\
-      document.getElementById('prev-tax-info').innerText = `\uc0\u26410 \u31237 `;\
-    \}\
-\
-    document.getElementById('prev-total').innerText = finalTotal.toLocaleString();\
-  \}\
-\
-  // \uc0\u21295 \u20986 \u25104 \u22294 \u29255 \u21151 \u33021  (\u26680 \u24515 )\
-  function downloadReceipt() \{\
-    const receiptCard = document.getElementById('receipt-card');\
-    const customerName = document.getElementById('input-name').value || 'Customer';\
-    \
-    // \uc0\u20351 \u29992  html2canvas \u25130 \u22294 \
-    html2canvas(receiptCard, \{\
-      scale: 2, // \uc0\u25552 \u39640 \u22294 \u29255 \u35299 \u26512 \u24230 \u65292 \u35731 \u23383 \u39636 \u26356 \u28165 \u26224 \
-      backgroundColor: "#f9f6f0" \
-    \}).then(canvas => \{\
-      // \uc0\u24314 \u31435 \u19979 \u36617 \u36899 \u32080 \
-      const link = document.createElement('a');\
-      link.download = `CatCoffee_\uc0\u35330 \u21934 _$\{customerName\}.png`;\
-      link.href = canvas.toDataURL('image/png');\
-      link.click();\
-    \});\
-  \}\
-\
-  // \uc0\u21021 \u22987 \u21270 \u38928 \u35261 \
-  window.onload = updatePreview;\
-</script>\
-\
-</body>\
-</html>}
+  button {
+    background-color: var(--brand-color); color: white; border: none; padding: 10px 20px;
+    border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; margin-top: 10px;
+  }
+  button:hover { background-color: #4a332a; }
+  .btn-secondary { background-color: #888; margin-bottom: 15px;}
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="control-panel">
+    <h3>📝 訂單資料輸入</h3>
+    <div class="form-group">
+      <label>訂購人姓名</label>
+      <input type="text" id="input-name" placeholder="例如：王小明" oninput="updatePreview()">
+    </div>
+    
+    <div class="form-group">
+      <label>商品清單</label>
+      <div id="items-container">
+        <div class="item-row">
+          <input type="text" class="item-name" placeholder="商品名稱" value="經典配方豆 半磅" oninput="updatePreview()">
+          <input type="number" class="item-price" placeholder="單價" value="350" oninput="updatePreview()">
+          <input type="number" class="item-qty" placeholder="數量" value="2" oninput="updatePreview()">
+        </div>
+      </div>
+      <button class="btn-secondary" onclick="addItemRow()">+ 新增一項商品</button>
+    </div>
+
+    <div class="form-group">
+      <label>
+        <input type="checkbox" id="input-tax" onchange="updatePreview()"> 需要開立發票 (含稅 5%)
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>付款期限</label>
+      <input type="datetime-local" id="input-pay-time" onchange="updatePreview()">
+    </div>
+    
+    <div class="form-group">
+      <label>取貨/出貨時間</label>
+      <input type="datetime-local" id="input-pickup-time" onchange="updatePreview()">
+    </div>
+
+    <div class="form-group">
+      <label>訂單備註</label>
+      <input type="text" id="input-notes" placeholder="例如：豆子需磨粉 (手沖)" oninput="updatePreview()">
+    </div>
+
+    <div class="form-group">
+      <label>特別提醒 (自訂內容)</label>
+      <textarea id="input-reminder" rows="3" oninput="updatePreview()">感謝您的訂購！請於期限內完成匯款，以免訂單取消。收到款項後將盡速為您烘焙出貨。</textarea>
+    </div>
+
+    <button onclick="downloadReceipt()">📸 儲存為訂單圖片</button>
+  </div>
+
+  <div class="receipt-preview" id="receipt-card">
+    <div class="receipt-header">
+      <h2>Cat Coffee</h2>
+      <p>禾富食品 - 訂單確認單</p>
+    </div>
+    
+    <div class="receipt-section">
+      <strong>訂購人：</strong> <span id="prev-name">王小明</span><br>
+      <strong>付款期限：</strong> <span id="prev-pay-time">尚未設定</span><br>
+      <strong>取貨時間：</strong> <span id="prev-pickup-time">尚未設定</span><br>
+      <strong>備註：</strong> <span id="prev-notes">無</span>
+    </div>
+
+    <table class="receipt-table">
+      <thead>
+        <tr>
+          <th>品項</th>
+          <th class="text-right">數量</th>
+          <th class="text-right">小計</th>
+        </tr>
+      </thead>
+      <tbody id="prev-items">
+        </tbody>
+    </table>
+
+    <div class="total-section">
+      <div style="font-size: 14px; color: #666; margin-bottom: 5px;" id="prev-tax-info">未稅</div>
+      總計：NT$ <span id="prev-total">0</span>
+    </div>
+
+    <div class="footer-notes">
+      <strong>💡 特別提醒：</strong><br>
+      <span id="prev-reminder">感謝您的訂購！請於期限內完成匯款，以免訂單取消。</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 格式化日期時間的輔助函式
+  function formatDateTime(datetimeStr) {
+    if (!datetimeStr) return '尚未設定';
+    const date = new Date(datetimeStr);
+    return `${date.getFullYear()}/${String(date.getMonth()+1).padStart(2,'0')}/${String(date.getDate()).padStart(2,'0')} ${String(date.getHours()).padStart(2,'0')}:${String(date.getMinutes()).padStart(2,'0')}`;
+  }
+
+  // 新增商品輸入列
+  function addItemRow() {
+    const container = document.getElementById('items-container');
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `
+      <input type="text" class="item-name" placeholder="商品名稱" oninput="updatePreview()">
+      <input type="number" class="item-price" placeholder="單價" oninput="updatePreview()">
+      <input type="number" class="item-qty" placeholder="數量" value="1" oninput="updatePreview()">
+    `;
+    container.appendChild(row);
+  }
+
+  // 即時更新預覽卡片
+  function updatePreview() {
+    document.getElementById('prev-name').innerText = document.getElementById('input-name').value || '未填寫';
+    document.getElementById('prev-pay-time').innerText = formatDateTime(document.getElementById('input-pay-time').value);
+    document.getElementById('prev-pickup-time').innerText = formatDateTime(document.getElementById('input-pickup-time').value);
+    document.getElementById('prev-notes').innerText = document.getElementById('input-notes').value || '無';
+    document.getElementById('prev-reminder').innerText = document.getElementById('input-reminder').value || '無';
+
+    // 計算商品與總價
+    let subtotal = 0;
+    const itemsTbody = document.getElementById('prev-items');
+    itemsTbody.innerHTML = ''; 
+
+    const itemNames = document.querySelectorAll('.item-name');
+    const itemPrices = document.querySelectorAll('.item-price');
+    const itemQtys = document.querySelectorAll('.item-qty');
+
+    for(let i = 0; i < itemNames.length; i++) {
+      const name = itemNames[i].value;
+      const price = parseFloat(itemPrices[i].value) || 0;
+      const qty = parseInt(itemQtys[i].value) || 0;
+      
+      if(name) {
+        const itemTotal = price * qty;
+        subtotal += itemTotal;
+        itemsTbody.innerHTML += `
+          <tr>
+            <td>${name}</td>
+            <td class="text-right">${qty}</td>
+            <td class="text-right">$${itemTotal}</td>
+          </tr>
+        `;
+      }
+    }
+
+    // 處理稅金
+    const isTaxed = document.getElementById('input-tax').checked;
+    let finalTotal = subtotal;
+    if(isTaxed) {
+      finalTotal = Math.round(subtotal * 1.05);
+      document.getElementById('prev-tax-info').innerText = `含稅 (5%)`;
+    } else {
+      document.getElementById('prev-tax-info').innerText = `未稅`;
+    }
+
+    document.getElementById('prev-total').innerText = finalTotal.toLocaleString();
+  }
+
+  // 匯出成圖片功能 (核心)
+  function downloadReceipt() {
+    const receiptCard = document.getElementById('receipt-card');
+    const customerName = document.getElementById('input-name').value || 'Customer';
+    
+    // 使用 html2canvas 截圖
+    html2canvas(receiptCard, {
+      scale: 2, // 提高圖片解析度，讓字體更清晰
+      backgroundColor: "#f9f6f0" 
+    }).then(canvas => {
+      // 建立下載連結
+      const link = document.createElement('a');
+      link.download = `CatCoffee_訂單_${customerName}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  }
+
+  // 初始化預覽
+  window.onload = updatePreview;
+</script>
+
+</body>
+</html>
