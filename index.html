@@ -50,7 +50,9 @@
     padding: 30px;
     border-radius: 0px; /* 模擬真實明細 */
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    width: 350px;
+    /* 讓寬度隨著內容(商品名稱)自動變寬，但保留最小寬度 */
+    min-width: 350px;
+    width: max-content;
     color: #333;
     position: relative;
   }
@@ -59,9 +61,12 @@
   .receipt-header p { margin: 5px 0 0; font-size: 14px; color: #666; }
   .receipt-section { margin-bottom: 15px; font-size: 15px; line-height: 1.6; }
   .receipt-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-  .receipt-table th { text-align: left; border-bottom: 1px solid #ddd; padding: 5px 0; }
-  .receipt-table td { padding: 8px 0; }
-  .text-right { text-align: right; }
+  /* 強制表格文字不換行，讓長品名能順利撐開圖片寬度 */
+  .receipt-table th { text-align: left; border-bottom: 1px solid #ddd; padding: 5px 0; white-space: nowrap; }
+  .receipt-table td { padding: 8px 0; white-space: nowrap; }
+  /* 增加 CSS 權重，確保標題和數字都能正確向右對齊 */
+  .receipt-table .text-right { text-align: right; }
+  
   .total-section { border-top: 2px dashed #ccc; padding-top: 15px; text-align: right; font-size: 18px; font-weight: bold; color: var(--brand-color); }
   .footer-notes { font-size: 13px; color: #555; background: #fff; padding: 10px; border-left: 4px solid var(--brand-color); margin-top: 15px; }
 
