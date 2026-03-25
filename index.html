@@ -38,11 +38,18 @@
   }
   .form-group { margin-bottom: 15px; }
   .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
-  .form-group input, .form-group textarea {
+  .form-group input[type="text"], 
+  .form-group input[type="number"], 
+  .form-group input[type="datetime-local"], 
+  .form-group textarea {
     width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;
   }
+  .checkbox-group label {
+    display: inline-flex; align-items: center; margin-bottom: 8px; margin-right: 15px; font-weight: normal;
+  }
+  .checkbox-group input { margin-right: 5px; }
   .item-row { display: flex; gap: 10px; margin-bottom: 10px; }
-  .item-row input { flex: 1; }
+  .item-row input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
   
   /* 收據預覽卡片樣式 (要轉成圖片的區域) */
   .receipt-preview {
@@ -50,9 +57,9 @@
     padding: 30px;
     border-radius: 0px; /* 模擬真實明細 */
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    /* 【修正】固定寬度，防止過寬導致縮放變形 */
+    /* 固定寬度，防止過寬導致縮放變形 */
     width: 380px; 
-    box-sizing: border-box; /* 確保 padding 不影響寬度計算 */
+    box-sizing: border-box; 
     color: #333;
     position: relative;
   }
@@ -60,21 +67,21 @@
   .receipt-header h2 { margin: 0; color: var(--brand-color); letter-spacing: 2px; }
   .receipt-header p { margin: 5px 0 0; font-size: 14px; color: #666; }
   .receipt-section { margin-bottom: 15px; font-size: 15px; line-height: 1.6; }
-  .receipt-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; table-layout: fixed; /* 輔助對齊 */ }
+  .receipt-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; table-layout: fixed; }
   
   /* 表格基本樣式 */
   .receipt-table th, .receipt-table td { 
     padding: 8px 0; 
-    vertical-align: top; /* 讓換行的文字與數字頂部對齊 */
+    vertical-align: top; 
   }
 
-  /* 【修正】定義各欄位寬度與對齊 */
+  /* 定義各欄位寬度與對齊 */
   /* 商品名稱：允許換行 */
   .receipt-table th:nth-child(1),
   .receipt-table td:nth-child(1) {
     text-align: left;
-    width: 45%; /* 給名稱較多空間 */
-    word-wrap: break-word; /* 允許長單詞換行 */
+    width: 45%; 
+    word-wrap: break-word; 
     overflow-wrap: break-word;
   }
   
@@ -85,8 +92,8 @@
   .receipt-table td:nth-child(3),
   .receipt-table th:nth-child(4),
   .receipt-table td:nth-child(4) {
-    text-align: right; /* 【重要】數字向右對齊 */
-    white-space: nowrap; /* 數字不換行 */
+    text-align: right; 
+    white-space: nowrap; 
   }
 
   .total-section { border-top: 2px dashed #ccc; padding-top: 15px; text-align: right; font-size: 18px; font-weight: bold; color: var(--brand-color); }
@@ -122,9 +129,13 @@
       <button class="btn-secondary" onclick="addItemRow()">+ 新增一項商品</button>
     </div>
 
-    <div class="form-group">
+    <div class="form-group checkbox-group">
+      <label style="display:block; font-weight:bold; margin-bottom:5px;">稅金顯示設定</label>
       <label>
         <input type="checkbox" id="input-tax" onchange="updatePreview()"> 需要開立發票 (含稅 5%)
+      </label>
+      <label>
+        <input type="checkbox" id="input-show-untaxed" onchange="updatePreview()"> 顯示「未稅」字樣
       </label>
     </div>
 
@@ -249,16 +260,23 @@
       }
     }
 
-    // 處理稅金
+    // 處理稅金顯示邏輯
     const isTaxed = document.getElementById('input-tax').checked;
+    const showUntaxed = document.getElementById('input-show-untaxed').checked;
     const taxInfoElement = document.getElementById('prev-tax-info');
     let finalTotal = subtotal;
     
     if(isTaxed) {
       finalTotal = Math.round(subtotal * 1.05);
-      taxInfoElement.style.display = 'block'; // 含稅時顯示
+      taxInfoElement.innerText = '含稅 (5%)';
+      taxInfoElement.style.display = 'block'; // 含稅時強制顯示
     } else {
-      taxInfoElement.style.display = 'none'; // 未稅時隱藏
+      if(showUntaxed) {
+        taxInfoElement.innerText = '未稅';
+        taxInfoElement.style.display = 'block'; // 依據勾選顯示未稅
+      } else {
+        taxInfoElement.style.display = 'none'; // 隱藏稅金提示
+      }
     }
 
     document.getElementById('prev-total').innerText = finalTotal.toLocaleString();
