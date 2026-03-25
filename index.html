@@ -133,14 +133,14 @@
     <div class="receipt-section">
       <strong>訂購人：</strong> <span id="prev-name">王小明</span><br>
       <strong>付款期限：</strong> <span id="prev-pay-time">尚未設定</span><br>
-      <strong>取貨時間：</strong> <span id="prev-pickup-time">尚未設定</span><br>
-      <strong>備註：</strong> <span id="prev-notes">無</span>
+      <strong>取貨時間：</strong> <span id="prev-pickup-time">尚未設定</span>
     </div>
 
     <table class="receipt-table">
       <thead>
         <tr>
           <th>品項</th>
+          <th class="text-right">單價</th>
           <th class="text-right">數量</th>
           <th class="text-right">小計</th>
         </tr>
@@ -149,8 +149,12 @@
         </tbody>
     </table>
 
+    <div class="receipt-section" style="margin-bottom: 15px;">
+      <strong>備註：</strong> <span id="prev-notes">無</span>
+    </div>
+
     <div class="total-section">
-      <div style="font-size: 14px; color: #666; margin-bottom: 5px;" id="prev-tax-info">未稅</div>
+      <div style="font-size: 14px; color: #666; margin-bottom: 5px; display: none;" id="prev-tax-info">含稅 (5%)</div>
       總計：NT$ <span id="prev-total">0</span>
     </div>
 
@@ -210,6 +214,7 @@
         itemsTbody.innerHTML += `
           <tr>
             <td>${name}</td>
+            <td class="text-right">$${price}</td>
             <td class="text-right">${qty}</td>
             <td class="text-right">$${itemTotal}</td>
           </tr>
@@ -219,12 +224,14 @@
 
     // 處理稅金
     const isTaxed = document.getElementById('input-tax').checked;
+    const taxInfoElement = document.getElementById('prev-tax-info');
     let finalTotal = subtotal;
+    
     if(isTaxed) {
       finalTotal = Math.round(subtotal * 1.05);
-      document.getElementById('prev-tax-info').innerText = `含稅 (5%)`;
+      taxInfoElement.style.display = 'block'; // 含稅時顯示
     } else {
-      document.getElementById('prev-tax-info').innerText = `未稅`;
+      taxInfoElement.style.display = 'none'; // 未稅時隱藏
     }
 
     document.getElementById('prev-total').innerText = finalTotal.toLocaleString();
